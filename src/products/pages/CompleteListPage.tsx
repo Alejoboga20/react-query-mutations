@@ -1,13 +1,15 @@
-import { ProductList } from ".."
-
+import { ProductList, useProducts } from '..';
 
 export const CompleteListPage = () => {
-  return (
-    <div className="flex-col">
-      <h1 className="text-2xl font-bold">Todos los productos</h1>
+	const { isLoading, data = [] } = useProducts({});
 
-      <ProductList />
+	console.log({ isLoading, data });
 
-    </div>
-  )
-}
+	return (
+		<div className='flex-col'>
+			<h1 className='text-2xl font-bold'>Todos los productos</h1>
+
+			<ProductList />
+		</div>
+	);
+};

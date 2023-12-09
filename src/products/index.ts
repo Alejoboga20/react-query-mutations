@@ -1,3 +1,5 @@
+export { useProducts } from './hooks/useProducts';
+
 export { productsApi } from './api/productsApi';
 
 export type { Product } from './interfaces/product';
@@ -11,3 +13,5 @@ export { CompleteListPage } from './pages/CompleteListPage';
 export { MensPage } from './pages/MensPage';
 export { NewProduct } from './pages/NewProduct';
 export { WomensPage } from './pages/WomensPage';
+
+export * as productActions from './services/actions';
