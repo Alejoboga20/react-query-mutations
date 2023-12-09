@@ -1,12 +1,13 @@
-import { ProductList } from ".."
+import { ProductList, useProducts } from '..';
 
 export const MensPage = () => {
-  return (
-    <div className="flex-col">
-      <h1 className="text-2xl font-bold">Productos para hombres</h1>
+	const { data = [] } = useProducts({ filterKey: "men's clothing" });
 
-      <ProductList />
+	return (
+		<div className='flex-col'>
+			<h1 className='text-2xl font-bold'>Productos para hombres</h1>
 
-    </div>
-  )
-}
+			<ProductList products={data} />
+		</div>
+	);
+};
