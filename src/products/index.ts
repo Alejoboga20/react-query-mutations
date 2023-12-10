@@ -1,5 +1,6 @@
 export { useProducts } from './hooks/useProducts';
 export { useProduct } from './hooks/useProduct';
+export { usePrefetchProduct } from './hooks/usePrefetchProduct';
 
 export { productsApi } from './api/productsApi';
 
