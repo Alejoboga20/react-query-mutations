@@ -19,13 +19,22 @@ export const getProductById = async (id: number): Promise<Product> => {
 };
 
 export const getProducts = async ({ filterKey }: GetProductsArgs): Promise<Product[]> => {
-	sleep(2);
+	await sleep(2);
 
-	const { data } = await productsApi.get<Product[]>(`/products`, {
+	const { data } = await productsApi.get<Product[]>('/products', {
 		params: {
 			category: filterKey,
 		},
 	});
 
+	return data;
+};
+
+type CreateProduct = Omit<Product, 'id' | 'rating'>;
+
+export const createPRoduct = async (product: CreateProduct): Promise<Product> => {
+	await sleep(2);
+
+	const { data } = await productsApi.post<Product>('/products', product);
 	return data;
 };
