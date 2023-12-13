@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Button, Image, Input, Textarea } from '@nextui-org/react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { useMutation } from '@tanstack/react-query';
-import { productActions } from '..';
+
+import { useProductMutation } from '..';
 
 type FormData = {
 	title: string;
@@ -21,15 +21,12 @@ const initialData: FormData = {
 };
 
 export const NewProduct = () => {
-	const productMutation = useMutation({
-		mutationFn: productActions.createPRoduct,
-	});
-
 	const [tempImage, setTempImage] = useState('');
 
 	const { control, handleSubmit, watch } = useForm<FormData>({
 		defaultValues: { ...initialData },
 	});
+	const productMutation = useProductMutation();
 
 	const newImage = watch('image');
 
