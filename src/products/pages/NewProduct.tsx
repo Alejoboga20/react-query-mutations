@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Button, Image, Input, Textarea } from '@nextui-org/react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
@@ -13,14 +14,22 @@ const initialData: FormData = {
 	title: '',
 	price: 0,
 	description: '',
-	category: '',
+	category: "men's clothing",
 	image: '',
 };
 
 export const NewProduct = () => {
-	const { control, handleSubmit } = useForm<FormData>({
+	const [tempImage, setTempImage] = useState('');
+
+	const { control, handleSubmit, watch } = useForm<FormData>({
 		defaultValues: { ...initialData },
 	});
+
+	const newImage = watch('image');
+
+	useEffect(() => {
+		setTempImage(newImage);
+	}, [newImage]);
 
 	const onSubmit: SubmitHandler<FormData> = (data) => {
 		console.log({ data });
@@ -57,7 +66,7 @@ export const NewProduct = () => {
 									type='number'
 									label='Precio del producto'
 									value={field.value?.toString()}
-									onChange={field.onChange}
+									onChange={(e) => field.onChange(+e.target.value)}
 								/>
 							)}
 						/>
@@ -90,13 +99,23 @@ export const NewProduct = () => {
 							)}
 						/>
 
-						<select className='rounded-md p-3 mt-2 bg-gray-800 w-full'>
-							<option value="men's clothing">Men's clothing</option>
-							<option value="women's clothing">Women's clothing</option>
-							<option value='jewelery'>Jewelery</option>
-							<option value='electronics'>Electronics</option>
-						</select>
-
+						<Controller
+							control={control}
+							name='category'
+							rules={{ required: true }}
+							render={({ field }) => (
+								<select
+									className='rounded-md p-3 mt-2 bg-gray-800 w-full'
+									value={field.value}
+									onChange={field.onChange}
+								>
+									<option value="men's clothing">Men's clothing</option>
+									<option value="women's clothing">Women's clothing</option>
+									<option value='jewelery'>Jewelery</option>
+									<option value='electronics'>Electronics</option>
+								</select>
+							)}
+						/>
 						<br />
 						<Button className='mt-2' color='primary' type='submit'>
 							Crear
@@ -110,7 +129,7 @@ export const NewProduct = () => {
 							height: '600px',
 						}}
 					>
-						<Image src='https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_.jpg' />
+						<Image src={tempImage} />
 					</div>
 				</div>
 			</form>
