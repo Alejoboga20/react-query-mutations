@@ -6,6 +6,17 @@ export const useProductMutation = () => {
 
 	const mutation = useMutation({
 		mutationFn: productActions.createPRoduct,
+		/* For optimistic updates */
+		onMutate: (data) => {
+			const optimisticData = { ...data, id: Date.now() };
+
+			queryClient.setQueryData<Product[]>(
+				['products', { filterKey: data.category }],
+				(prevData) => {
+					return [...(prevData || []), optimisticData];
+				}
+			);
+		},
 		onSuccess: (data) => {
 			/* Invalidate Query */
 			/* queryClient.invalidateQueries({
