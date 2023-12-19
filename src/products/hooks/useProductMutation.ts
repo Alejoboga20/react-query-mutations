@@ -16,17 +16,26 @@ export const useProductMutation = () => {
 					return [...(prevData || []), optimisticData];
 				}
 			);
+
+			return { optimisticData };
 		},
-		onSuccess: (data) => {
+		onSuccess: (data, variables, context) => {
 			/* Invalidate Query */
 			/* queryClient.invalidateQueries({
 				queryKey: ['products', { filterKey: data.category }],
 			}); */
 			/* Avoid Invalidate Query */
+			queryClient.removeQueries({
+				queryKey: ['products', context?.optimisticData.id],
+			});
 			queryClient.setQueryData<Product[]>(
 				['products', { filterKey: data.category }],
 				(prevData) => {
-					return [...(prevData || []), data];
+					if (!prevData) return [data];
+
+					return prevData.map((product) =>
+						product.id === context?.optimisticData.id ? data : product
+					);
 				}
 			);
 		},
