@@ -39,8 +39,19 @@ export const useProductMutation = () => {
 				}
 			);
 		},
-		onSettled: () => {
-			console.log('first mutation settled');
+		/* For error handling */
+		onError: (_, variables, context) => {
+			queryClient.removeQueries({
+				queryKey: ['products', context?.optimisticData.id],
+			});
+			queryClient.setQueryData<Product[]>(
+				['products', { filterKey: variables.category }],
+				(prevData) => {
+					if (!prevData) return [];
+
+					return prevData.filter((product) => product.id !== context?.optimisticData.id);
+				}
+			);
 		},
 	});
 

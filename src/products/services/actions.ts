@@ -34,6 +34,7 @@ type CreateProduct = Omit<Product, 'id' | 'rating'>;
 
 export const createPRoduct = async (product: CreateProduct): Promise<Product> => {
 	await sleep(5);
+
 	const { data } = await productsApi.post<Product>('/products', product);
 
 	return data;
